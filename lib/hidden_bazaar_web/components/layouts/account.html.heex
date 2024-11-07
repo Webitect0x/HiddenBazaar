@@ -1,0 +1,36 @@
+<.live_component
+  module={HiddenBazaarWeb.Components.NavBar}
+  id="nav-bar"
+  current_user={@current_user}
+/>
+<div class="flex gap-4 p-5 justify-center mt-5">
+  <aside class="w-[15rem]">
+    <ul class="space-y-2">
+      <li>
+      <.link href={~p"/account"}>
+        Account
+      </.link>
+    </li>
+    <li>
+      <.link href={~p"/account/shops"}>
+        Shops
+      </.link>
+    </li>
+    <li>
+      <.link href={~p"/users/settings"}>
+        Listings
+      </.link>
+    </li>
+    <li>
+      <.link href={~p"/users/settings"}>
+        Settings
+      </.link>
+    </li>
+    </ul>
+  </aside>
+  <main class="px-4 py-20 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-2xl">
+      <%= @inner_content %>
+    </div>
+  </main>
+</div>

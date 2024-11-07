@@ -1,0 +1,29 @@
+<.header>
+  Shop <%= @shop.id %>
+  <:subtitle>This is a shop record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/shop/#{@shop}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit shop</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Name"><%= @shop.name %></:item>
+  <:item title="Description"><%= @shop.description %></:item>
+  <:item title="Shop avatar"><%= @shop.shop_avatar %></:item>
+  <:item title="Shop banner"><%= @shop.shop_banner %></:item>
+</.list>
+
+<.back navigate={~p"/shop"}>Back to shops</.back>
+
+<.modal :if={@live_action == :edit} id="shop-modal" show on_cancel={JS.patch(~p"/shop/#{@shop}")}>
+  <.live_component
+    module={HiddenBazaarWeb.ShopLive.FormComponent}
+    id={@shop.id}
+    title={@page_title}
+    action={@live_action}
+    shop={@shop}
+    patch={~p"/shop/#{@shop}"}
+  />
+</.modal>

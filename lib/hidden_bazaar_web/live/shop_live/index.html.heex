@@ -1,0 +1,52 @@
+<div class="w-[40rem]">
+<.header>
+  Listing Shops
+  <:actions>
+    <.link patch={~p"/shop/new"}>
+      <.button>New Shop</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="shops"
+  rows={@streams.shops}
+  row_click={fn {_id, shop} -> JS.navigate(~p"/shop/#{shop}") end}
+>
+  <:col :let={{_id, shop}} label="Name"><%= shop.name %></:col>
+  <:col :let={{_id, shop}} label="Description"><%= shop.description %></:col>
+  <:col :let={{_id, shop}} label="Shop avatar">
+    <img src={~p"/uploads/#{Path.basename(shop.shop_avatar)}"} alt="Shop avatar" />
+  </:col>
+  <:col :let={{_id, shop}} label="Shop banner">
+    <img src={~p"/uploads/#{Path.basename(shop.shop_banner)}"} alt="Shop banner" />
+  </:col>
+  <:action :let={{_id, shop}}>
+    <div class="sr-only">
+      <.link navigate={~p"/shop/#{shop}"}>Show</.link>
+    </div>
+    <.link patch={~p"/shop/#{shop}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, shop}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: shop.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+</div>
+
+<.modal :if={@live_action in [:new, :edit]} id="shop-modal" show on_cancel={JS.patch(~p"/shop")}>
+  <.live_component
+    module={HiddenBazaarWeb.ShopLive.FormComponent}
+    id={@shop.id || :new}
+    title={@page_title}
+    action={@live_action}
+    current_user={@current_user}
+    shop={@shop}
+    patch={~p"/shop"}
+  />
+</.modal>
